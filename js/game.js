@@ -3,17 +3,14 @@ var ctx = canvas.getContext('2d');
 var score = 0;
 
 //generate invisible 4x5 grid
-let grid = [ 
-    {x: 40, y: 120 },
-];
+let grid = [];
 for(let x = 0; x < 4; x++)
 {
     for(let y = 0; y < 5; y++)
     {
-        grid.push( {x: grid[0].x + 80*x, y: grid[0].y + 80*y} );
+        grid.push( {x: 40 + 80*x, y: 120 + 80*y} );
     }
 }
-grid = grid.splice(1,20);
 
 //print score
 function printScore(score)
@@ -63,11 +60,15 @@ function draw()
     ctx.fillRect(0,0,canvas.width, canvas.height);
 
     //print numbers to the screen
-    var currentRound = generateNumbers(1,20,3);
-    for ( number of currentRound)
+    var currentNumbers = generateNumbers(1,20,3);
+    var currentRound = [];
+    
+    for ( number of currentNumbers)
     {
-        drawNumber(grid[Math.round(Math.random()*18)].x, grid[Math.round(Math.random()*18)].y, String(number));
+        drawNumber(grid[Math.round(Math.random()*19)].x, grid[Math.round(Math.random()*19)].y, String(number));
     }
+    currentRound.push( {x: 12, y: 12});
+    console.log(currentRound);
 
     //print current score
     printScore(score);
