@@ -132,6 +132,7 @@ function initGame(button)
         draw();
         button.textContent = "Reset";
         setTimeout(gameOver, 60000); //this is a minute
+        timeLeft = canvas.width;
         timeBarInterval = setInterval( function()
         {
             timeLeft -= 20/375;
