@@ -2,6 +2,20 @@ var canvas = document.getElementById('gameCanvas');
 var ctx = canvas.getContext('2d');
 var score = 0;
 
+//generate invisible 4x5 grid
+let grid = [ 
+    {x: 40, y: 120 },
+];
+for(let x = 0; x < 4; x++)
+{
+    for(let y = 0; y < 5; y++)
+    {
+        grid.push( {x: grid[0].x + 80*x, y: grid[0].y + 80*y} );
+    }
+}
+grid = grid.splice(1,20);
+console.log(grid);
+
 //print score
 function printScore(score)
 {
