@@ -14,7 +14,6 @@ for(let x = 0; x < 4; x++)
     }
 }
 grid = grid.splice(1,20);
-console.log(grid);
 
 //print score
 function printScore(score)
@@ -67,7 +66,7 @@ function draw()
     var currentRound = generateNumbers(1,20,3);
     for ( number of currentRound)
     {
-        drawNumber(Math.random()*canvas.width, Math.random()*(canvas.height-30) + 30 + 40, String(number));
+        drawNumber(grid[Math.round(Math.random()*18)].x, grid[Math.round(Math.random()*18)].y, String(number));
     }
 
     //print current score
