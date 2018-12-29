@@ -158,6 +158,10 @@ function gameOver()
     ctx.fillText( `Score: ${score}`, (canvas.width - ctx.measureText(`Score: ${score}`).width)/2, 180);
     //clear Interval
     clearInterval(timeBarInterval);
+    //reset stats
+    score = 0;
+    currentRound = [];
+    currentNumbers = [];
 }
 
 //background color
