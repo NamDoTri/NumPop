@@ -62,13 +62,30 @@ function draw()
     //print numbers to the screen
     var currentNumbers = generateNumbers(1,20,3);
     var currentRound = [];
-    
-    for ( number of currentNumbers)
+    while (currentRound.length < currentNumbers.length)
     {
-        drawNumber(grid[Math.round(Math.random()*19)].x, grid[Math.round(Math.random()*19)].y, String(number));
+        let coordinates = {
+            coorX: grid[Math.round(Math.random()*19)].x,
+            coorY: grid[Math.round(Math.random()*19)].y
+        }
+        let isDuplicated = false;
+        for(i of currentRound)
+        {
+            if(i.coorX == coordinates.coorX || i.coorY == coordinates.coorY)
+            {
+                isDuplicated = true;
+            }
+        }
+        if(isDuplicated == false)
+        {
+            currentRound.push(coordinates);
+        }
     }
-    currentRound.push( {x: 12, y: 12});
-    console.log(currentRound);
+    for ( number in currentNumbers)
+    {
+        //console.log(currentRound[number].coorX, currentRound[number].coorY);
+        drawNumber(currentRound[number].coorX, currentRound[number].coorY, currentNumbers[number]);
+    }
 
     //print current score
     printScore(score);
