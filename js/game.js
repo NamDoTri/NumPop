@@ -69,8 +69,8 @@ function mouseDownHandler(e)
         draw();
     }else if (e.offsetY > canvas.offsetTop)
     {
-        alert("Game over");
-        initGame(document.getElementById("startButton"));
+        gameOver();
+        //initGame(document.getElementById("startButton"));
     }
 }
 
@@ -135,6 +135,19 @@ function initGame(button)
         score = 0;
         button.textContent = "Start";
     }
+}
+
+function gameOver()
+{
+   //background color
+    ctx.fillStyle = "#def3fd";
+    ctx.fillRect(0,0,canvas.width, canvas.height); 
+    //print text
+    ctx.fillStyle = "Black";
+    ctx.font = "40px serif";
+    ctx.fillText('GAME OVER', (canvas.width - ctx.measureText('GAME OVER').width)/2, 100);
+    ctx.font = "30px serif";
+    ctx.fillText( `Score: ${score}`, (canvas.width - ctx.measureText(`Score: ${score}`).width)/2, 180);
 }
 
 //background color
