@@ -67,11 +67,10 @@ function mouseDownHandler(e)
             roundOver = true;
         }
         draw();
-        console.log(currentRound, currentNumbers);
     }else if (e.offsetY > canvas.offsetTop)
     {
         alert("Game over");
-        initGame();
+        initGame(document.getElementById("startButton"));
     }
 }
 
