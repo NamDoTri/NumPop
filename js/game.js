@@ -68,6 +68,10 @@ function mouseDownHandler(e)
         }
         draw();
         console.log(currentRound, currentNumbers);
+    }else if (e.offsetY > canvas.offsetTop)
+    {
+        alert("Game over");
+        initGame();
     }
 }
 
@@ -79,7 +83,7 @@ function draw()
 
     if(roundOver == true)
     {
-        //print numbers to the screen
+        //reset stats
         currentNumbers = generateNumbers(1,20,3);
         currentRound = [];
         //First check if the coordinates are duplicated or not
@@ -119,11 +123,23 @@ function draw()
     printScore(score);
 }
 
-function initGame()
+function initGame(button)
 {
-    roundOver = true;
-    draw();
+    if(button.textContent == "Start")
+    {
+        roundOver = true;
+        draw();
+        button.textContent = "Reset"
+    }else{
+        ctx.fillStyle = "#def3fd";
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+        score = 0;
+        button.textContent = "Start";
+    }
 }
 
+//background color
+ctx.fillStyle = "#def3fd";
+ctx.fillRect(0,0,canvas.width, canvas.height);
 document.addEventListener("mousedown", mouseDownHandler, false);
 
