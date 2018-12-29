@@ -1,7 +1,9 @@
 var canvas = document.getElementById('gameCanvas');
 var ctx = canvas.getContext('2d');
 var score = 0;
-
+var currentRound = [];
+var currentNumbers;
+var roundOver = false;
 //generate invisible 4x5 grid
 let grid = [];
 for(let x = 0; x < 4; x++)
@@ -34,23 +36,39 @@ function generateNumbers(from, to, length)
     }
     return numbers.sort(function(a,b){ return a-b }); //sort the array in an ascending order
 }
-//print numbers
+
+//print a number in the center of the ball
 function drawNumber(dotX, dotY, numberToBePrint)
 {
+    //print the ball
     ctx.beginPath();
     ctx.arc(dotX, dotY, 40, 0, 360);
     ctx.closePath();
     ctx.fillStyle="White";
     ctx.fill();
-
-    /*ctx.strokeStyle = "Light Gray";
-    ctx.moveTo(dotX - 40, dotY);
-    ctx.lineTo(dotX + 40, dotY);
-    ctx.stroke();*/
-
+    //print number inside
     ctx.fillStyle = "Black";
     ctx.font = "16px serif";
     ctx.fillText(String(numberToBePrint), dotX - ctx.measureText(String(numberToBePrint)).width/2, dotY + 8, 57);
+}
+
+//check if user clicks on the correct number
+function mouseDownHandler(e)
+{
+    var clickedX = e.offsetX;
+    var clickedY = e.offsetY;
+    if (Math.sqrt( Math.pow(clickedX - currentRound[0].coorX,2) + Math.pow(clickedY - currentRound[0].coorY,2) ) < 40)
+    {
+        currentNumbers = currentNumbers.splice(1,currentNumbers.length-1);
+        currentRound = currentRound.splice(1, currentRound.length-1);
+        score += 10;
+        if(currentNumbers.length == 0)
+        {
+            roundOver = true;
+        }
+        draw();
+        console.log(currentRound, currentNumbers);
+    }
 }
 
 function draw()
@@ -59,36 +77,53 @@ function draw()
     ctx.fillStyle = "#def3fd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
 
-    //print numbers to the screen
-    var currentNumbers = generateNumbers(1,20,3);
-    var currentRound = [];
-    while (currentRound.length < currentNumbers.length)
+    if(roundOver == true)
     {
-        let coordinates = {
-            coorX: grid[Math.round(Math.random()*19)].x,
-            coorY: grid[Math.round(Math.random()*19)].y
-        }
-        let isDuplicated = false;
-        for(i of currentRound)
+        //print numbers to the screen
+        currentNumbers = generateNumbers(1,20,3);
+        currentRound = [];
+        //First check if the coordinates are duplicated or not
+        while (currentRound.length < currentNumbers.length)
         {
-            if(i.coorX == coordinates.coorX || i.coorY == coordinates.coorY)
+            let coordinates = {
+                coorX: grid[Math.round(Math.random()*19)].x,
+                coorY: grid[Math.round(Math.random()*19)].y
+            };
+            let isDuplicated = false;
+            for(i of currentRound)
             {
-                isDuplicated = true;
+                if(i.coorX == coordinates.coorX || i.coorY == coordinates.coorY)
+                {
+                    isDuplicated = true;
+                }
+            }
+            if(isDuplicated == false)
+            {
+                currentRound.push(coordinates);
             }
         }
-        if(isDuplicated == false)
+        //then print the balls out
+        for ( number in currentNumbers)
         {
-            currentRound.push(coordinates);
+            drawNumber(currentRound[number].coorX, currentRound[number].coorY, currentNumbers[number]);
         }
-    }
-    for ( number in currentNumbers)
-    {
-        //console.log(currentRound[number].coorX, currentRound[number].coorY);
-        drawNumber(currentRound[number].coorX, currentRound[number].coorY, currentNumbers[number]);
+        roundOver = false;
+    }else{
+        for ( number in currentNumbers)
+        {
+            drawNumber(currentRound[number].coorX, currentRound[number].coorY, currentNumbers[number]);
+        }
     }
 
     //print current score
     printScore(score);
 }
 
-draw();
+function initGame()
+{
+    roundOver = true;
+    draw();
+}
+
+document.addEventListener("mousedown", mouseDownHandler, false);
+
