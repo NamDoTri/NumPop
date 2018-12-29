@@ -4,6 +4,8 @@ var score = 0;
 var currentRound = [];
 var currentNumbers;
 var roundOver = false;
+var timeBarInterval;
+var timeLeft = canvas.width;
 //generate invisible 4x5 grid
 let grid = [];
 for(let x = 0; x < 4; x++)
@@ -19,7 +21,7 @@ function printScore(score)
 {
     ctx.font = "16px serif";
     ctx.fillStyle = "black";
-    ctx.fillText("Score: " + score, 10, 20);
+    ctx.fillText("Score: " + score, 10, 30);
 }
 
 //generate numbers for each round
@@ -67,10 +69,6 @@ function mouseDownHandler(e)
             roundOver = true;
         }
         draw();
-    }else if (e.offsetY > canvas.offsetTop)
-    {
-        gameOver();
-        //initGame(document.getElementById("startButton"));
     }
 }
 
@@ -79,6 +77,13 @@ function draw()
     //background color
     ctx.fillStyle = "#def3fd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
+
+    //print time bar
+    ctx.fillStyle = "#6fc0ab";
+    ctx.fillRect(0,0, timeLeft, 10);
+
+     //print current score
+     printScore(score);
 
     if(roundOver == true)
     {
@@ -117,9 +122,6 @@ function draw()
             drawNumber(currentRound[number].coorX, currentRound[number].coorY, currentNumbers[number]);
         }
     }
-
-    //print current score
-    printScore(score);
 }
 
 function initGame(button)
@@ -128,7 +130,13 @@ function initGame(button)
     {
         roundOver = true;
         draw();
-        button.textContent = "Reset"
+        button.textContent = "Reset";
+        setTimeout(gameOver, 60000); //this is a minute
+        timeBarInterval = setInterval( function()
+        {
+            timeLeft -= 20/375;
+            draw();
+        }, 10);
     }else{
         ctx.fillStyle = "#def3fd";
         ctx.fillRect(0,0,canvas.width, canvas.height);
@@ -148,6 +156,8 @@ function gameOver()
     ctx.fillText('GAME OVER', (canvas.width - ctx.measureText('GAME OVER').width)/2, 100);
     ctx.font = "30px serif";
     ctx.fillText( `Score: ${score}`, (canvas.width - ctx.measureText(`Score: ${score}`).width)/2, 180);
+    //clear Interval
+    clearInterval(timeBarInterval);
 }
 
 //background color
