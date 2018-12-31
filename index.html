@@ -2,12 +2,26 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, user-scalable=no, minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="full-screen" content="yes"/>
+    <meta name="screen-orientation" content="portrait">
     <title>Numbers</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    <script src="https://connect.facebook.net/en_US/fbinstant.6.2.js"></script>
 </head>
 <body>
+    <div>
+        Game mode:  
+        <form id="gameMode">
+            <select>
+                <option value="normal">Normal</option>
+                <option value="advanced">Advanced</option>
+                <option value="endless">Endless</option>
+            </select>
+        </form>
+    </div>
     <button onclick="initGame(this)" id="startButton">Start</button>
     <div id="container">
         <canvas id="gameCanvas" width=320 height=480>
