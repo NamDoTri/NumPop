@@ -6,6 +6,8 @@ var currentNumbers;
 var roundOver = false;
 var timeBarInterval;
 var timeLeft = canvas.width;
+var From, To, Length;
+var gameMode = document.getElementById("gameMode").value;
 //generate invisible 4x5 grid
 let grid = [];
 for(let x = 0; x < 4; x++)
@@ -72,6 +74,44 @@ function mouseDownHandler(e)
     }
 }
 
+function setDifficulty(gameMode="normal")
+{
+    let round = {from: null, to: null, length: null};
+    switch(gameMode)
+    {
+        case "normal": 
+            if(score < 150)
+            {
+                round.from = 0;
+                round.to = 20;
+                round.length = 3;
+            }else if (score<310)
+            {
+                round.from = -100;
+                round.to = 100;
+                round.length = 4;  
+            }else if(score<510)
+            {
+                round.from = 0;
+                round.to = 1000;
+                round.length = 5;
+            }else
+            {
+                round.from = -1000;
+                round.to = 1000;
+                round.length = 5;
+            }
+        break;
+        case "advanced":
+            alert("temporarily unavailable");
+        break;
+        case "endless":
+            alert("temporarily unavailable");
+        break;       
+    }
+    return round;
+}
+
 function draw()
 {
     //background color
@@ -88,7 +128,7 @@ function draw()
     if(roundOver == true)
     {
         //reset stats
-        currentNumbers = generateNumbers(1,20,3);
+        currentNumbers = generateNumbers( setDifficulty(gameMode).from,setDifficulty(gameMode).to,setDifficulty(gameMode).length );
         currentRound = [];
         //First check if the coordinates are duplicated or not
         while (currentRound.length < currentNumbers.length)
@@ -100,7 +140,7 @@ function draw()
             let isDuplicated = false;
             for(i of currentRound)
             {
-                if(i.coorX == coordinates.coorX || i.coorY == coordinates.coorY)
+                if(i.coorX == coordinates.coorX && i.coorY == coordinates.coorY)
                 {
                     isDuplicated = true;
                 }
@@ -141,6 +181,7 @@ function initGame(button)
     }else{
         ctx.fillStyle = "#def3fd";
         ctx.fillRect(0,0,canvas.width, canvas.height);
+        timeLeft = canvas.width;
         score = 0;
         button.textContent = "Start";
     }
